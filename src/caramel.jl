@@ -17,5 +17,6 @@ export read_vertex, read_edge, read_mode
 #core.jl
 export Q, w, md, dst, src
 export in, out
+export f,g,raw_model
 
 end

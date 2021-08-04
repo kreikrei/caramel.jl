@@ -34,3 +34,13 @@ end
 map variable cost of a `lin` based on its `moda`
 """
 g(e::lin) = g(M(e.md))
+
+"""
+    raw_model(V,E,M,T)
+takes in the graph to build a direct mathematical model of the problem.
+"""
+function raw_model(V::Dict,E::Vector,M::Dict,T::Vector)
+    m = Model()
+
+    return m
+end
