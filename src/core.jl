@@ -20,5 +20,8 @@ out(i::String) = filter(p -> src(p) == i, E())
 function to compute fixed cost of a `lin`.
 """
 function f(e::lin)
+    constant = M(e.md).con
+    tripdist = M(e.md).dis * haversine([V(r.src).x,V(r.src).y], [V(r.dst).x,V(r.dst).y])
 
+    return fixed_cost = constant + tripdist
 end
