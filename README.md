@@ -9,4 +9,10 @@ Model and algorithm for flexible and dynamic inventory routing with direct deliv
 distribute(khazanah, permintaan, trayek, moda, T)
 ```
 
-using the command `distribute` will read the inputs and find the optimal distribution. There are test cases given in the test folder, feel free to add more tests and variations. wml!
+using the command `distribute` will read the inputs and find the optimal distribution. There are test cases given in the test folder, feel free to add more tests and variations.
+
+Note to self:
+- math program deps => JuMP, Cbc, Clp
+- data reading => CSV, Distances
+
+wml!
