@@ -9,6 +9,9 @@ w(e::lin) = e.w
 
 Q(m::moda) = m.Q
 Q(e::lin) = Q(M(e.md))
+g(m::moda) = m.var
+con(m::moda) = m.con
+dis(m::moda) = m.dis
 
 #filters
 in(i::String) = filter(p -> dst(p) == i, E())
@@ -25,3 +28,9 @@ function f(e::lin)
 
     return fixed_cost = constant + tripdist
 end
+
+"""
+    g(e)
+map variable cost of a `lin` based on its `moda`
+"""
+g(e::lin) = g(M(e.md))
