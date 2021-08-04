@@ -11,7 +11,7 @@ end
 
 function EM_check(e::Vector,m::Dict)
     #unique md in edge list == all m in M
-    from_e = unique([e[r].md for r in keys(e)])
+    from_e = unique([md(e[r]) for r in keys(e)])
     from_m = collect(keys(m))
 
     return sort(from_e) == sort(from_m)
