@@ -1,5 +1,5 @@
 """
-    `satker` is "satuan kerja" and contains its position to compute distances, its max and min capacity, and inventory flows at the begining and throughout the planning horizon.
+`satker` is "satuan kerja" and contains its position to compute distances, its max and min capacity, and inventory flows at the begining and throughout the planning horizon.
 """
 struct satker
     #coordinates
@@ -16,7 +16,7 @@ struct satker
 end
 
 """
-    moda is the type of transportation. this will be called by lins. The struct contains building blocks for cost functions and load-trip multiples.
+`moda` is the type of transportation. this will be called by lins. The struct contains building blocks for cost functions and load-trip multiples.
 """
 struct moda
     #capacity
@@ -31,7 +31,7 @@ struct moda
 end
 
 """
-    lin is the edge of the multigraph it shows the triplet source, destination, and mode of an edge and it also contains the availability of that segment.
+`lin` is the edge of the multigraph it shows the triplet source, destination, and mode of an edge and it also contains the availability of that segment.
 """
 struct lin
     #triplet (i,j,k)

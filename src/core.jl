@@ -13,3 +13,12 @@ Q(e::lin) = Q(M(e.md))
 #filters
 in(i::String) = filter(p -> dst(p) == i, E())
 out(i::String) = filter(p -> src(p) == i, E())
+
+#cost functions
+"""
+    f(e)
+function to compute fixed cost of a `lin`.
+"""
+function f(e::lin)
+
+end
