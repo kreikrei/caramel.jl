@@ -12,7 +12,7 @@ distribute(khazanah, permintaan, trayek, moda, T)
 using the command `distribute` will read the inputs and find the optimal distribution. There are test cases given in the test folder, feel free to add more tests and variations.
 
 Note to self:
-- math program deps => JuMP, Cbc, Clp
-- data reading => CSV, Distances
+- math program deps => `JuMP`, `Cbc`, `Clp`
+- data reading => `CSV`, `Distances`
 
-wml!
+Bakal dipakai buat sidang semoga cepat selesai. wml!
