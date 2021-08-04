@@ -27,10 +27,6 @@ end
     m_test = rand(keys(M()))
     @test M(m_test) == M()[m_test]
 
-    #START AND DEMAND
-    @test
-
+    #INVENTORY FEASIBILITY
+    @test inventory_feasibility(V())
 end
-
-sum(V(i).START for i in keys(V()))
-sum(sum(V(i).d) for i in keys(V()))
