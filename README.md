@@ -18,4 +18,6 @@ Note to self:
 
 buat transportasi ada 4 hal yang penting `f`, `g`, `Q`, `lim`. tiga pertama terikat sama moda apa yang digunakan -- di mana `f` dan `g` akan jadi fungsi buat komputasi biaya tetap dan biaya total. Terus `Q` kan ya gitu2 aja namanya juga kapasitas kendaraan. Terakhir, `lim` sifatnya terikat sama trayek masing-masing jd bukan bagian dr moda.
 
-parameter biaya dalam satuan juta Rupiah - JANGAN LUPA OKEE?! Bakal dipakai buat sidang semoga cepat selesai. wml!
+Buat colgen => struktur kolomnya adalah `Dict{lin,NamedTuple}` atau mending `Tuple` si muatan dan tripnya?
+
+parameter biaya dalam satuan `juta Rupiah` - JANGAN LUPA OKEE?! Bakal dipakai buat sidang semoga cepat selesai. wish me luck!
