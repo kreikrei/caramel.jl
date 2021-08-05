@@ -2,32 +2,33 @@ using Revise
 using caramel
 using Test
 
-function inventory_feasibility(v_set::Dict)
-    starting = sum(v_set[i].START for i in keys(v_set))
-    demands = sum(sum(v_set[i].d) for i in keys(v_set))
+function inventory_feasibility(V_::Dict)
+    starting = sum(V_[i].START for i in keys(V_))
+    demands = sum(sum(V_[i].d) for i in keys(V_))
+    minim = sum(V_[i].MIN for i in keys(V_))
 
-    return starting >= demands
+    return starting - minim >= demands
 end
 
-function EM_check(e::Vector,m::Dict)
+function EM_check(E_::Vector, M_::Dict)
     #unique md in edge list == all m in M
-    from_e = unique([md(e[r]) for r in keys(e)])
-    from_m = collect(keys(m))
+    from_E = unique([md(E_[r]) for r in keys(E_)])
+    from_M = collect(keys(M_))
 
-    return sort(from_e) == sort(from_m)
+    return sort(from_E) == sort(from_M)
 end
 
-function EV_check(e::Vector,v::Dict)
+function EV_check(E_::Vector, V_::Dict)
     #unique vtx in src and dst of edge_list == all in V
-    from_e = unique(union(src.(values(e)),dst.(values(e))))
-    from_v = collect(keys(v))
+    from_E = unique(union(src.(values(E_)), dst.(values(E_))))
+    from_V = collect(keys(V_))
 
-    return sort(from_e) == sort(from_v)
+    return sort(from_E) == sort(from_V)
 end
 
 @testset "caramel.jl" begin
     #READ DATA FIRST
-    read_vertex("khazanah.csv","permintaan.csv")
+    read_vertex("khazanah.csv", "permintaan.csv")
     read_edge("trayek.csv")
     read_mode("kendaraan.csv")
 
