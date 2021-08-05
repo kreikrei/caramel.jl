@@ -5,8 +5,9 @@ using Test
 function inventory_feasibility(V_::Dict)
     starting = sum(V_[i].START for i in keys(V_))
     demands = sum(sum(V_[i].d) for i in keys(V_))
+    minim = sum(V_[i].MIN for i in keys(V_))
 
-    return starting >= demands
+    return starting - minim >= demands
 end
 
 function EM_check(E_::Vector, M_::Dict)
@@ -27,7 +28,7 @@ end
 
 @testset "caramel.jl" begin
     #READ DATA FIRST
-    read_vertex("khazanah.csv","permintaan.csv")
+    read_vertex("khazanah.csv", "permintaan.csv")
     read_edge("trayek.csv")
     read_mode("kendaraan.csv")
 
