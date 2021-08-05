@@ -46,7 +46,7 @@ end
 """
 `col` is the structure of a column which contains the `o` variable or load and the `p` variable or trip.
 """
-mutable struct col
+struct col
     e::lin
     o::Int64
     p::Int64

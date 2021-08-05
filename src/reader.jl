@@ -26,7 +26,7 @@ function read_vertex(vertex_file::String,demand_file::String)
     end
     vertex_data[] = vertex_dict
 
-    return vertex_dict
+    return nothing
 end
 
 """
@@ -65,5 +65,5 @@ function read_mode(mode_file::String)
     end
     mode_data[] = mode_dict
 
-    return mode_dict
+    return nothing
 end
