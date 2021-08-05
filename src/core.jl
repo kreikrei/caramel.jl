@@ -36,11 +36,79 @@ map variable cost of a `lin` based on its `moda`
 g(e::lin) = g(M(e.md))
 
 """
-    raw_model(V,E,M,T)
+    raw_model_IP(V,E,M,T)
 takes in the graph to build a direct mathematical model of the problem.
 """
-function raw_model(V::Dict,E::Vector,M::Dict,T::Vector)
-    m = Model()
+function raw_model_IP(V_::Dict, E_::Vector, M_::Dict, T_::Vector)
+    m = Model(Cbc.Optimizer)
+
+    @variable(m, o[e = E_, t = T_] >= 0, Int) #load variable
+    @variable(m, p[e = E_, t = T_] >= 0, Int) #trip variable
+    @variable(m, I[i = keys(V_), t = vcat(0, T_)]) #inventory level
+
+    @constraint(m, [i = keys(V_), t = T_],
+        I[i, t - 1] + sum(o[e, t] for e in IN(i)) ==
+        V_[i].d[t] + sum(o[e, t] for e in OUT(i)) + I[i, t]
+    ) #konservasi aliran persediaan
+
+    @constraint(m, [i = keys(V_), t = T_],
+        V_[i].MIN <= I[i, t] <= V_[i].MAX
+    ) #max min limit of inventory
+
+    @constraint(m, [i = keys(V_)],
+        I[i, 0] == V_[i].START
+    ) #starting inventory
+
+    @constraint(m, [e = E_, t = T_],
+        o[e, t] <= Q(e) * p[e, t]
+    ) #muatan trip relation
+
+    @constraint(m, [e = E_, t = T_],
+        p[e, t] <= w(e)
+    ) #usage limit
+
+    @objective(m, Min,
+        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in E_, t in T_)
+    )
+
+    return m
+end
+
+"""
+    raw_model_LP(V,E,M,T)
+takes in the graph to build a direct mathematical model of the problem.
+"""
+function raw_model_LP(V_::Dict, E_::Vector, M_::Dict, T_::Vector)
+    m = Model(Clp.Optimizer)
+
+    @variable(m, o[e = E_, t = T_] >= 0) #load variable
+    @variable(m, p[e = E_, t = T_] >= 0) #trip variable
+    @variable(m, I[i = keys(V_), t = vcat(0, T_)]) #inventory level
+
+    @constraint(m, [i = keys(V_), t = T_],
+        I[i, t - 1] + sum(o[e, t] for e in IN(i)) ==
+        V_[i].d[t] + sum(o[e, t] for e in OUT(i)) + I[i, t]
+    ) #konservasi aliran persediaan
+
+    @constraint(m, [i = keys(V_), t = T_],
+        V_[i].MIN <= I[i, t] <= V_[i].MAX
+    ) #max min limit of inventory
+
+    @constraint(m, [i = keys(V_)],
+        I[i, 0] == V_[i].START
+    ) #starting inventory
+
+    @constraint(m, [e = E_, t = T_],
+        o[e, t] <= Q(e) * p[e, t]
+    ) #muatan trip relation
+
+    @constraint(m, [e = E_, t = T_],
+        p[e, t] <= w(e)
+    ) #usage limit
+
+    @objective(m, Min,
+        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in E_, t in T_)
+    )
 
     return m
 end
