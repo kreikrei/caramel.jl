@@ -1,10 +1,12 @@
 const vertex_data = Ref{Any}(nothing)
 const edge_data = Ref{Any}(nothing)
 const mode_data = Ref{Any}(nothing)
+const time_data = Ref{Any}(nothing)
 
 E() = edge_data[] #define edge set caller
 V() = vertex_data[] #define vertex set caller
 M() = mode_data[] #define mode set caller
+T() = time_data[] #define time set caller
 
 """
     read_vertex(vertex_file,demand_file)
@@ -14,6 +16,7 @@ function read_vertex(vertex_file::String,demand_file::String)
     vertex = CSV.File(vertex_file)
     demand = CSV.File(demand_file)
 
+    time_data[] = [1:1:length(demand);] #set time period
     vertex_dict = Dict{String,satker}()
     for r in vertex
         vertex_dict[r.name] = satker(
