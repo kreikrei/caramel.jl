@@ -13,7 +13,7 @@ end
 
 function EM_check(E_::Dict, M_::Dict)
     #unique md in edge list == all m in M
-    from_E = unique([md(E(p)) for p in keys(E_)])
+    from_E = unique(md.(values(E_)))
     from_M = collect(keys(M_))
 
     return sort(from_E) == sort(from_M)
