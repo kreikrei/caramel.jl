@@ -25,9 +25,12 @@ function to compute fixed cost of a `lin`.
 """
 function f(e::lin)
     constant = M(e.md).con
-    tripdist = M(e.md).dis * haversine([V(e.src).x,V(e.src).y], [V(e.dst).x,V(e.dst).y])
+    tripd = M(e.md).dis * haversine(
+        [V(e.src).x,V(e.src).y],
+        [V(e.dst).x,V(e.dst).y]
+    ) / 1000 # dalam km
 
-    return fixed_cost = constant + tripdist
+    return constant + tripd
 end
 
 """
