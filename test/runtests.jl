@@ -1,6 +1,7 @@
 using Revise
 using caramel
 using Test
+using JuMP
 
 function inventory_feasibility(V_::Dict)
     starting = sum(V_[i].START for i in keys(V_))
@@ -46,4 +47,9 @@ end
     #exhaustiveness of edge list
     @test EM_check(E(),M())
     @test EV_check(E(),V())
+
+    #optimality of test pack
+    tes_model_IP = raw_model_IP(V(),E(),M(),T())
+    optimize!(tes_model_IP)
+    @test termination_status(tes_model) == MOI.OPTIMAL
 end
