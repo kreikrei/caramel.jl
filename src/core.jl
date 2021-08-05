@@ -14,8 +14,8 @@ con(m::moda) = m.con
 dis(m::moda) = m.dis
 
 #filters
-in(i::String) = filter(p -> dst(p) == i, E())
-out(i::String) = filter(p -> src(p) == i, E())
+IN(i::String) = filter(p -> dst(p) == i, E())
+OUT(i::String) = filter(p -> src(p) == i, E())
 
 #cost functions
 """
@@ -24,7 +24,7 @@ function to compute fixed cost of a `lin`.
 """
 function f(e::lin)
     constant = M(e.md).con
-    tripdist = M(e.md).dis * haversine([V(r.src).x,V(r.src).y], [V(r.dst).x,V(r.dst).y])
+    tripdist = M(e.md).dis * haversine([V(e.src).x,V(e.src).y], [V(e.dst).x,V(e.dst).y])
 
     return fixed_cost = constant + tripdist
 end
