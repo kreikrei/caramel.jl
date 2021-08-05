@@ -36,16 +36,18 @@ accept edge list files in .csv to turn into vector of 'lin' type. Sets the `E` c
 function read_edge(edge_list::String)
     trayek = CSV.File(edge_list)
 
-    edge_vec = Vector{lin}()
+    edge_dict = Dict{Int64,lin}()
+    idx = 1
     for r in trayek
-        push!(edge_vec,lin(
-                r.src, r.dst, r.md, r.w
-            )
+        edge_dict[idx] = lin(
+            r.src, r.dst,
+            r.md, r.w
         )
+        idx += 1
     end
-    edge_data[] = edge_vec
+    edge_data[] = edge_dict
 
-    return edge_vec
+    return nothing
 end
 
 """
