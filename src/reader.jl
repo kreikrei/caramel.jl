@@ -1,10 +1,12 @@
 const vertex_data = Ref{Any}(nothing)
 const edge_data = Ref{Any}(nothing)
 const mode_data = Ref{Any}(nothing)
+const time_data = Ref{Any}(nothing)
 
 E() = edge_data[] #define edge set caller
 V() = vertex_data[] #define vertex set caller
 M() = mode_data[] #define mode set caller
+T() = time_data[] #define time set caller
 
 """
     read_vertex(vertex_file,demand_file)
@@ -14,6 +16,7 @@ function read_vertex(vertex_file::String,demand_file::String)
     vertex = CSV.File(vertex_file)
     demand = CSV.File(demand_file)
 
+    time_data[] = [1:1:length(demand);] #set time period
     vertex_dict = Dict{String,satker}()
     for r in vertex
         vertex_dict[r.name] = satker(
@@ -23,7 +26,7 @@ function read_vertex(vertex_file::String,demand_file::String)
     end
     vertex_data[] = vertex_dict
 
-    return vertex_dict
+    return nothing
 end
 
 """
@@ -33,16 +36,18 @@ accept edge list files in .csv to turn into vector of 'lin' type. Sets the `E` c
 function read_edge(edge_list::String)
     trayek = CSV.File(edge_list)
 
-    edge_vec = Vector{lin}()
+    edge_dict = Dict{Int64,lin}()
+    idx = 1
     for r in trayek
-        push!(edge_vec,lin(
-                r.src, r.dst, r.md, r.w
-            )
+        edge_dict[idx] = lin(
+            r.src, r.dst,
+            r.md, r.w
         )
+        idx += 1
     end
-    edge_data[] = edge_vec
+    edge_data[] = edge_dict
 
-    return edge_vec
+    return nothing
 end
 
 """
@@ -60,5 +65,5 @@ function read_mode(mode_file::String)
     end
     mode_data[] = mode_dict
 
-    return mode_dict
+    return nothing
 end

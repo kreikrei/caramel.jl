@@ -9,9 +9,10 @@ include("core.jl")
 
 #struct.jl
 export satker, moda, lin
+export col
 
 #reader.jl
-export V, E, M
+export V, E, M, T
 export read_vertex, read_edge, read_mode
 
 #core.jl
