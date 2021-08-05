@@ -18,6 +18,14 @@ Note to self:
 
 buat transportasi ada 4 hal yang penting `f`, `g`, `Q`, `lim`. tiga pertama terikat sama moda apa yang digunakan -- di mana `f` dan `g` akan jadi fungsi buat komputasi biaya tetap dan biaya total. Terus `Q` kan ya gitu2 aja namanya juga kapasitas kendaraan. Terakhir, `lim` sifatnya terikat sama trayek masing-masing jd bukan bagian dr moda.
 
-COLGEN => sebuah kolom itu didefinisikan sebagai path, tapi perlu diinget path kita ukurannya satu (satu segmen src-dst), sebenernya harusnya penilaian reduced costnya jdi lebih cepet si tp gatau deh cumaaa intinya gituu ```struct col => sebuah lin beserta nilai muatan dan trip```
+COLGEN => sebuah kolom itu didefinisikan sebagai path, tapi perlu diinget path kita ukurannya satu (satu segmen src-dst), sebenernya harusnya penilaian reduced costnya jdi lebih cepet si tp gatau deh cumaaa intinya gituu 
+
+ ```julia
+struct col
+    e::lin
+    o::Int64
+    p::Int64
+end
+```
 
 parameter biaya dalam satuan `juta Rupiah` - JANGAN LUPA OKEE?! Bakal dipakai buat sidang semoga cepat selesai. wish me luck!
