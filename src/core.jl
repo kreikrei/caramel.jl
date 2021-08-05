@@ -123,7 +123,7 @@ function raw_model_LP(V_::Dict, E_::Dict, M_::Dict, T_::Vector)
     ) #usage limit
 
     @objective(m, Min,
-        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in E_, t in T_)
+        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in keys(E_), t in T_)
     )
 
     return m

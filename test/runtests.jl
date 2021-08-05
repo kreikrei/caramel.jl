@@ -55,5 +55,10 @@ end
     #optimality of test pack
     tes_model_IP = raw_model_IP(V(),E(),M(),T())
     optimize!(tes_model_IP)
-    @test termination_status(tes_model) == MOI.OPTIMAL
+    @test termination_status(tes_model_IP) == MOI.OPTIMAL
+
+    #optimality of relaxation of test pack
+    tes_model_LP = raw_model_LP(V(),E(),M(),T())
+    optimize!(tes_model_LP)
+    @test termination_status(tes_model_LP) == MOI.OPTIMAL
 end
