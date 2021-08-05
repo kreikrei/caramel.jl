@@ -42,3 +42,12 @@ struct lin
     #limit of use
     w::Int64
 end
+
+"""
+`col` is the structure of a column which contains the `o` variable or load and the `p` variable or trip.
+"""
+mutable struct col
+    e::lin
+    o::Int64
+    p::Int64
+end
