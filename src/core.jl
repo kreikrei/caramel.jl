@@ -1,6 +1,7 @@
 #Accessors
 V(i::String) = vertex_data[][i]
 M(m::String) = mode_data[][m]
+E(e::Int64) = edge_data[][e]
 
 src(e::lin) = e.src
 dst(e::lin) = e.dst
