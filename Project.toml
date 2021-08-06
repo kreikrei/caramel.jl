@@ -11,6 +11,7 @@ Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
 
 [compat]
+Cbc = "0.8"
 JuMP = "0.21"
 Distances = "0.10"
 julia = "1.2"
