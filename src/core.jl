@@ -32,8 +32,8 @@ dis(e::lin) = dis(M(e.md))
 dis(e::Int64) = dis(E(e))
 
 #filters
-IN(i::String) = filter(p -> dst(last(p)) == i, keys(E()))
-OUT(i::String) = filter(p -> src(last(p)) == i, keys(E()))
+IN(i::String) = filter(p -> dst(E(p)) == i, E())
+OUT(i::String) = filter(p -> src(E(p)) == i, E())
 
 #cost functions
 """
@@ -55,36 +55,36 @@ f(e::Int64) = f(E(e))
     raw_model_IP(V,E,M,T)
 takes in the graph to build a direct mathematical model of the problem.
 """
-function raw_model_IP(V_::Dict, E_::Dict, M_::Dict, T_::Vector)
+function raw_model_IP(V_::Vector, E_::Vector, M_::Vector, T_::Vector)
     m = Model(Cbc.Optimizer)
 
-    @variable(m, o[e = keys(E_), t = T_] >= 0, Int) #load variable
-    @variable(m, p[e = keys(E_), t = T_] >= 0, Int) #trip variable
-    @variable(m, I[i = keys(V_), t = vcat(0, T_)]) #inventory level
+    @variable(m, o[e = E_, t = T_] >= 0, Int) #load variable
+    @variable(m, p[e = E_, t = T_] >= 0, Int) #trip variable
+    @variable(m, I[i = V_, t = vcat(0, T_)]) #inventory level
 
-    @constraint(m, [i = keys(V_), t = T_],
+    @constraint(m, [i = V_, t = T_],
         I[i, t - 1] + sum(o[e, t] for e in IN(i)) ==
-        V_[i].d[t] + sum(o[e, t] for e in OUT(i)) + I[i, t]
+        V(i).d[t] + sum(o[e, t] for e in OUT(i)) + I[i, t]
     ) #konservasi aliran persediaan
 
-    @constraint(m, [i = keys(V_), t = T_],
-        V_[i].MIN <= I[i, t] <= V_[i].MAX
+    @constraint(m, [i = V_, t = T_],
+        V(i).MIN <= I[i, t] <= V(i).MAX
     ) #max min limit of inventory
 
-    @constraint(m, [i = keys(V_)],
-        I[i, 0] == V_[i].START
+    @constraint(m, [i = V_],
+        I[i, 0] == V(i).START
     ) #starting inventory
 
-    @constraint(m, [e = keys(E_), t = T_],
+    @constraint(m, [e = E_, t = T_],
         o[e, t] <= Q(e) * p[e, t]
     ) #muatan trip relation
 
-    @constraint(m, [e = keys(E_), t = T_],
+    @constraint(m, [e = E_, t = T_],
         p[e, t] <= w(e)
     ) #usage limit
 
     @objective(m, Min,
-        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in keys(E_), t in T_)
+        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in E_, t in T_)
     )
 
     return m
@@ -94,36 +94,36 @@ end
     raw_model_LP(V,E,M,T)
 takes in the graph to build a direct mathematical model of the problem.
 """
-function raw_model_LP(V_::Dict, E_::Dict, M_::Dict, T_::Vector)
+function raw_model_LP(V_::Vector, E_::Vector, M_::Vector, T_::Vector)
     m = Model(Clp.Optimizer)
 
-    @variable(m, o[e = keys(E_), t = T_] >= 0) #load variable
-    @variable(m, p[e = keys(E_), t = T_] >= 0) #trip variable
-    @variable(m, I[i = keys(V_), t = vcat(0, T_)]) #inventory level
+    @variable(m, o[e = E_, t = T_] >= 0) #load variable
+    @variable(m, p[e = E_, t = T_] >= 0) #trip variable
+    @variable(m, I[i = V_, t = vcat(0, T_)]) #inventory level
 
-    @constraint(m, [i = keys(V_), t = T_],
+    @constraint(m, [i = V_, t = T_],
         I[i, t - 1] + sum(o[e, t] for e in IN(i)) ==
-        V_[i].d[t] + sum(o[e, t] for e in OUT(i)) + I[i, t]
+        V(i).d[t] + sum(o[e, t] for e in OUT(i)) + I[i, t]
     ) #konservasi aliran persediaan
 
-    @constraint(m, [i = keys(V_), t = T_],
-        V_[i].MIN <= I[i, t] <= V_[i].MAX
+    @constraint(m, [i = V_, t = T_],
+        V(i).MIN <= I[i, t] <= V(i).MAX
     ) #max min limit of inventory
 
-    @constraint(m, [i = keys(V_)],
-        I[i, 0] == V_[i].START
+    @constraint(m, [i = V_],
+        I[i, 0] == V(i).START
     ) #starting inventory
 
-    @constraint(m, [e = keys(E_), t = T_],
+    @constraint(m, [e = E_, t = T_],
         o[e, t] <= Q(e) * p[e, t]
     ) #muatan trip relation
 
-    @constraint(m, [e = keys(E_), t = T_],
+    @constraint(m, [e = E_, t = T_],
         p[e, t] <= w(e)
     ) #usage limit
 
     @objective(m, Min,
-        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in keys(E_), t in T_)
+        sum(f(e) * p[e, t] + g(e) * o[e, t] for e in E_, t in T_)
     )
 
     return m

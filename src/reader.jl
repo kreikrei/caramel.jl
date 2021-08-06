@@ -3,9 +3,9 @@ const edge_data = Ref{Any}(nothing)
 const mode_data = Ref{Any}(nothing)
 const time_data = Ref{Any}(nothing)
 
-E() = edge_data[] #define edge set caller
-V() = vertex_data[] #define vertex set caller
-M() = mode_data[] #define mode set caller
+E() = sort!(collect(keys(edge_data[]))) #define edge set caller
+V() = sort!(collect(keys(vertex_data[]))) #define vertex set caller
+M() = sort!(collect(keys(mode_data[]))) #define mode set caller
 T() = time_data[] #define time set caller
 
 """
