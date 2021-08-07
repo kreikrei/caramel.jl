@@ -9,7 +9,6 @@ include("core.jl")
 
 #struct.jl
 export satker, moda, lin
-export col
 
 #reader.jl
 export V, E, M, T
