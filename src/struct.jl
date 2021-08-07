@@ -42,3 +42,13 @@ struct lin
     #limit of use
     w::Int64
 end
+
+"""
+'haul' is a shipment which consist of its track, period, load, and trip. it is used to build columns and do other stuff.
+"""
+struct haul
+    e::Int64
+    t::Int64
+    o::Real
+    p::Real
+end

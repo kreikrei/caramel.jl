@@ -1,43 +1,40 @@
 using Revise
 using caramel
 using Test
+using JuMP
 
-function inventory_feasibility(v_set::Dict)
-    starting = sum(v_set[i].START for i in keys(v_set))
-    demands = sum(sum(v_set[i].d) for i in keys(v_set))
+function inventory_feasibility(V_::Vector)
+    starting = sum(V(i).START for i in V_)
+    demands = sum(sum(V(i).d) for i in V_)
+    minim = sum(V(i).MIN for i in V_)
 
-    return starting >= demands
+    return starting - minim >= demands
 end
 
-function EM_check(e::Vector,m::Dict)
+function EM_check(E_::Vector, M_::Vector)
     #unique md in edge list == all m in M
-    from_e = unique([md(e[r]) for r in keys(e)])
-    from_m = collect(keys(m))
+    from_E = unique(md.(E.(E_)))
+    from_M = M_
 
-    return sort(from_e) == sort(from_m)
+    return sort(from_E) == sort(from_M)
 end
 
-function EV_check(e::Vector,v::Dict)
+function EV_check(E_::Vector, V_::Vector)
     #unique vtx in src and dst of edge_list == all in V
-    from_e = unique(union(src.(values(e)),dst.(values(e))))
-    from_v = collect(keys(v))
+    from_E = unique(union(src.(E.(E_)), dst.(E.(E_))))
+    from_V = V_
 
-    return sort(from_e) == sort(from_v)
+    return sort(from_E) == sort(from_V)
 end
 
 @testset "caramel.jl" begin
     #READ DATA FIRST
-    read_vertex("khazanah.csv","permintaan.csv")
+    read_vertex("khazanah.csv", "permintaan.csv")
     read_edge("trayek.csv")
     read_mode("kendaraan.csv")
 
-    #SAMPLE ACCESSORS 1
-    v_test = rand(keys(V()))
-    @test V(v_test) == V()[v_test]
-
-    #SAMPLE ACCESORS 2
-    m_test = rand(keys(M()))
-    @test M(m_test) == M()[m_test]
+    #test f
+    f(1) == f(E(1))
 
     #INVENTORY FEASIBILITY
     @test inventory_feasibility(V())
@@ -45,4 +42,22 @@ end
     #exhaustiveness of edge list
     @test EM_check(E(),M())
     @test EV_check(E(),V())
+
+    #optimality of test pack
+    tes_model_IP = raw_model_IP(V(),E(),M(),T())
+    optimize!(tes_model_IP)
+    @test termination_status(tes_model_IP) == MOI.OPTIMAL
+
+    ip_sol = convert_raw(tes_model_IP.obj_dict[:o], tes_model_IP.obj_dict[:p])
+    @test typeof(collect(keys(period_view(ip_sol)))) == Vector{Int64}
+    @test typeof(collect(keys(lin_view(ip_sol)))) == Vector{Int64}
+
+    #optimality of relaxation of test pack
+    tes_model_LP = raw_model_LP(V(),E(),M(),T())
+    optimize!(tes_model_LP)
+    @test termination_status(tes_model_LP) == MOI.OPTIMAL
+
+    lp_sol = convert_raw(tes_model_LP.obj_dict[:o], tes_model_LP.obj_dict[:p])
+    @test typeof(collect(keys(period_view(lp_sol)))) == Vector{Int64}
+    @test typeof(collect(keys(lin_view(lp_sol)))) == Vector{Int64}
 end
