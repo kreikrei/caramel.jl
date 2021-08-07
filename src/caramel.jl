@@ -9,6 +9,7 @@ include("core.jl")
 
 #struct.jl
 export satker, moda, lin
+export haul
 
 #reader.jl
 export V, E, M, T
@@ -18,6 +19,8 @@ export read_vertex, read_edge, read_mode
 export Q, w, md, dst, src
 export IN, OUT
 export f, g
-export raw_model_IP, raw_model_LP
+export raw_model_IP, raw_model_LP, convert_raw
+export period_view, lin_view
+export cost
 
 end

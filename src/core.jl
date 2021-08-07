@@ -128,3 +128,57 @@ function raw_model_LP(V_::Vector, E_::Vector, M_::Vector, T_::Vector)
 
     return m
 end
+
+"""
+    convert_raw(o, p)
+takes `raw_model` solution and turn it into a vector of haul for easy processing in other functions
+"""
+function convert_raw(o::JuMP.Containers.DenseAxisArray, p::JuMP.Containers.DenseAxisArray)
+    res = Vector{haul}()
+    for e in E(), t in T()
+        if value(o[e,t]) > 0
+            push!(res, haul(
+                    e, t, value(o[e,t]), value(p[e,t])
+                )
+            )
+        end
+    end
+
+    return res
+end
+
+"""
+    period_view(sol)
+takes a vector of haul which is the universal form of solution and turns them into a dictionary of edge loads and trips indexed by periods.
+"""
+function period_view(sol::Vector{haul})
+    res = Dict{Int64,Vector{NamedTuple}}()
+    idx = unique([s.t for s in sol])
+    for i in idx
+        res[i] = Vector{NamedTuple}()
+        to_push = filter(p -> p.t == i, sol)
+        for r in to_push
+            push!(res[i], (e = r.e, o = r.o, p = r.p))
+        end
+    end
+
+    return res
+end
+
+"""
+    edge_view(sol)
+takes a vector of haul which is the universal form of solution and turns them into a dictionary of edge loads and trips indexed by lins.
+"""
+function lin_view(sol::Vector{haul})
+    res = Dict{Int64,Vector{NamedTuple}}()
+    idx = unique([s.e for s in sol])
+    for i in idx
+        res[i] = Vector{NamedTuple}()
+        to_push = filter(p -> p.e == i, sol)
+        for r in to_push
+            push!(res[i], (t = r.t, o = r.o, p = r.p))
+        end
+    end
+
+    return res
+end
