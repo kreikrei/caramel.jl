@@ -29,9 +29,9 @@ end
 
 @testset "caramel.jl" begin
     #READ DATA FIRST
-    read_vertex("khazanah.csv", "permintaan.csv")
-    read_edge("trayek.csv")
-    read_mode("kendaraan.csv")
+    read_vertex("./smallest/khazanah.csv", "./smallest/permintaan.csv")
+    read_edge("./smallest/trayek.csv")
+    read_mode("./smallest/kendaraan.csv")
 
     #test f
     f(1) == f(E(1))
