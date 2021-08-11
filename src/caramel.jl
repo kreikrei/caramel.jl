@@ -3,9 +3,9 @@ module caramel
 using JuMP, Cbc, Clp
 using CSV, Distances
 
-include("struct.jl")
-include("reader.jl")
-include("core.jl")
+include("./raw/struct.jl")
+include("./raw/reader.jl")
+include("./raw/core.jl")
 
 #struct.jl
 export satker, moda, lin
