@@ -9,7 +9,7 @@ M() = sort!(collect(keys(mode_data[]))) #define mode set caller
 T() = time_data[] #define time set caller
 
 """
-    read_vertex(vertex_file,demand_file)
+    read_vertex(vertex_file)
 accept strings of file names in .csv format to be processed into a dictionary of `satker` type. Also sets the `V()` constant.
 """
 function read_vertex(vertex_file::String,demand_file::String)
@@ -40,7 +40,7 @@ function read_edge(edge_list::String)
     idx = 1
     for r in trayek
         edge_dict[idx] = lin(
-            r.src, r.dst,
+            r.ori, r.dst,
             r.md, r.w
         )
         idx += 1

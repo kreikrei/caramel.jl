@@ -3,9 +3,8 @@ module caramel
 using JuMP, Cbc, Clp
 using CSV, Distances
 
-include("./raw/struct.jl")
-include("./raw/reader.jl")
-include("./raw/core.jl")
+include("./raw/IO.jl")
+include("./raw/raw.jl")
 
 #struct.jl
 export satker, moda, lin
@@ -22,5 +21,12 @@ export f, g
 export raw_model_IP, raw_model_LP, convert_raw
 export period_view, lin_view
 export cost
+
+include("./fcnf/fcnf.jl")
+include("./fcnf/IO.jl")
+
+export Node, loc, per
+export Arc, ori, dst, f, g, u
+export Commodity, src, snk, d, δ
 
 end

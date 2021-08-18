@@ -18,14 +18,15 @@ Note to self:
 
 buat transportasi ada 4 hal yang penting `f`, `g`, `Q`, `lim`. tiga pertama terikat sama moda apa yang digunakan -- di mana `f` dan `g` akan jadi fungsi buat komputasi biaya tetap dan biaya total. Terus `Q` kan ya gitu2 aja namanya juga kapasitas kendaraan. Terakhir, `lim` sifatnya terikat sama trayek masing-masing jd bukan bagian dr moda.
 
-COLGEN => sebuah kolom itu didefinisikan sebagai path, tapi perlu diinget path kita ukurannya satu (satu segmen src-dst), sebenernya harusnya penilaian reduced costnya jdi lebih cepet si tp gatau deh cumaaa intinya gituu 
-
- ```julia
-struct col
-    e::lin
-    o::Int64
-    p::Int64
-end
-```
-
 parameter biaya dalam satuan `juta Rupiah` - JANGAN LUPA OKEE?! Bakal dipakai buat sidang semoga cepat selesai. wish me luck!
+
+KYKNYA KITA AKAN FOKUS KE Large Neighborhood Search!!
+
+Log:
+11/8/2021 => structure buat arc sama commodity selesai.
+penting buat diinget set bentuknya dictionary yg numbered. nnti diiterate pake keys masing2 dan klo ada accessor ya panggil dlu Dict-nya. `A = Dict{Integer, arc}` brarti klo mau access jdi `ori(A[a]) for a in syalalala`. MODEL ARC-FCNF SUDAH JADI -- brarti otw benchmark pake solver komersial.
+
+Todos:
+- bikin *fungsi konversi* data Bank Indonesia di 4 CSV jdi struktur data yg ready
+- bikin *data generator* buat instance dengan ukuran di atas 50. coba bikin semirip mungkin sama data Bank Indonesia, tp jgn smp ngebatesin banget juga. Bbrp yg penting: ada komoditas representasi *demand negatif*, ada *beberapa jenis edge* dengan harga dan kapasitas yang berbeda, *konektivitas antar satker* harus terjamin, dan *fisibilitas problem instance* juga harus diusahain terjamin -- kalo gabisa coba bikin fungsi buat ngecek fisibilitas dan ngebenerinnya.
+- running data-data berukuran besar di solver komersil => benchmark waktu algoritma. harapannya dg data yang jumlah node-nya di atas 80 runtimenya menitan itungannya.
